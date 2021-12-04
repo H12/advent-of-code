@@ -11,6 +11,9 @@ defmodule AdventOfCode do
 
   ## Examples
 
+      iex> AdventOfCode.depth_counter([1, 1, 1])
+      0
+
       iex> AdventOfCode.depth_counter([1, 2, 3])
       2
 
