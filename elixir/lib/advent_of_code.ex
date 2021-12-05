@@ -1,150 +1,35 @@
 defmodule AdventOfCode do
   @moduledoc """
-  Solutions for 2021 Advent of Code.
+  The AdventOfCode namespace.
   """
+
+  alias AdventOfCode.{DayOne, DayTwo}
 
   @doc """
-  The solution to part one of day one.
-
-  Given a List of integers, outputs an integer referring to how many list
-  entries are greater than the previous.
-
-  ## Examples
-
-      iex> AdventOfCode.depth_counter([1, 1, 1])
-      0
-
-      iex> AdventOfCode.depth_counter([1, 2, 3])
-      2
-
-      iex> AdventOfCode.depth_counter([3, 2, 1])
-      0
-
-      iex> AdventOfCode.depth_counter([199, 200, 208, 210, 200, 207, 240, 269, 260, 263])
-      7
+  The solution to Day One Part One.
   """
-  def depth_counter(depths)
-
-  @spec depth_counter(list(integer())) :: integer()
-  def depth_counter([head | tail]) do
-    depth_counter(tail, head, 0)
-  end
-
-  @spec depth_counter(list(integer()), integer(), integer()) :: integer()
-  def depth_counter([head | tail], prev, count) do
-    if head > prev do
-      depth_counter(tail, head, count + 1)
-    else
-      depth_counter(tail, head, count)
-    end
-  end
-
-  def depth_counter([], _, acc) do
-    acc
+  def solve_part_one(input) do
+    input
+    |> DayOne.parse_input()
+    |> DayOne.depth_counter()
   end
 
   @doc """
-  The solution to part two of day one.
-
-  Given a List of integers, outputs an integer referring to how many
-  three-entry windows are greater than the previous.
-
-  ## Examples
-
-      iex> AdventOfCode.depth_window_counter([1, 1, 1, 1, 1])
-      0
-
-      iex> AdventOfCode.depth_window_counter([1, 2, 3, 4, 5])
-      2
-
-      iex> AdventOfCode.depth_window_counter([5, 4, 3, 2, 1])
-      0
-
-      iex> AdventOfCode.depth_window_counter([199, 200, 208, 210, 200, 207, 240, 269, 260, 263])
-      5
+  The solution to Day One Part Two.
   """
-  @spec depth_window_counter(list(integer())) :: integer()
-  def depth_window_counter(depths) do
-    depths
-    |> build_sums()
-    |> depth_counter()
+  def solve_part_two(input) do
+    input
+    |> DayOne.parse_input()
+    |> DayOne.build_sums()
+    |> DayOne.depth_counter()
   end
 
   @doc """
-  Takes a list of integers and converts into a list of sums of each three-entry
-  window.
-
-  Used as part of the day one, part two solution.
-
-  ## Examples
-
-      iex> AdventOfCode.build_sums([1, 1, 1, 1, 1])
-      [3, 3, 3]
-
-      iex> AdventOfCode.build_sums([1, 2, 3, 4, 5])
-      [6, 9, 12]
-
-      iex> AdventOfCode.build_sums([5, 4, 3, 2, 1])
-      [12, 9, 6]
-
-      iex> AdventOfCode.build_sums([199, 200, 208, 210, 200, 207, 240, 269, 260, 263])
-      [607, 618, 618, 617, 647, 716, 769, 792]
+  The solution to Day Two Part One.
   """
-  @spec build_sums(list(integer())) :: list(integer())
-  def build_sums(depths) do
-    build_sums(depths, [])
+  def day_two_part_one(input) do
+    input
+    |> DayTwo.parse_input()
+    |> DayTwo.calculate_position()
   end
-
-  @spec build_sums(list(integer()), list(integer())) :: list(integer())
-  def build_sums([_ | tail] = [first, second, third | _], acc) do
-    build_sums(tail, [first + second + third] ++ acc)
-  end
-
-  def build_sums([_, _], acc) do
-    Enum.reverse(acc)
-  end
-
-
-  @typedoc """
-  A position of two integers, representing horizontal position and depth,
-  respectively.
-  """
-  @type position() :: {integer(), integer()}
-
-  @typedoc """
-  Either :down, :up, or :forward.
-  """
-  @type direction() :: :down | :up | :forward
-
-  @typedoc """
-  Representation of a movement command.
-
-  The first element is a direction, and the second is an integer representing a
-  unit of distance.
-  """
-  @type movement() :: {direction(), integer()}
-
-  @doc """
-  Calculates the relative position after executing the provided list of
-  movements.
-
-  It returns a tuple containing the horizontal, and vertical positions,
-  respectively.
-
-  ## Examples
-
-      iex> AdventOfCode.calculate_position([{:up, 1}, {:forward, 3}, {:down, 5}])
-      {3, 4}
-
-      iex> AdventOfCode.calculate_position([{:up, 5}, {:forward, 3}, {:down, 1}])
-      {3, -4}
-  """
-  @spec calculate_position(list(movement())) :: position()
-  def calculate_position(movements) do
-    Enum.reduce(movements, {0, 0}, &apply_movement/2)
-  end
-
-  defp apply_movement({:forward, dist}, {x, y}), do: {x + dist, y}
-  defp apply_movement({:down, dist}, {x, y}), do: {x, y + dist}
-  defp apply_movement({:up, dist}, {x, y}), do: {x, y - dist}
 end
