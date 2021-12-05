@@ -22,6 +22,12 @@ defmodule AdventOfCode.DayTwo do
   """
   @type position() :: {integer(), integer()}
 
+  @typedoc """
+  A tuple of three integers, representing horizontal position, depth, and aim
+  respectively.
+  """
+  @type aimed_position() :: {integer(), integer()}
+
   @doc """
   Calculates the relative position after executing the provided list of
   movements.
@@ -42,9 +48,33 @@ defmodule AdventOfCode.DayTwo do
     Enum.reduce(movements, {0, 0}, &apply_movement/2)
   end
 
+  @doc """
+  Calculates the relative position after executing the provided list of
+  movements.
+
+  It returns a tuple containing the horizontal, and vertical positions,
+  respectively.
+
+  ## Examples
+
+      iex> AdventOfCode.DayTwo.calculate_position_with_aim([{:up, 1}, {:forward, 3}, {:down, 5}])
+      {3, -3, 4}
+
+      iex> AdventOfCode.DayTwo.calculate_position_with_aim([{:up, 5}, {:forward, 3}, {:down, 1}])
+      {3, -15, -4}
+  """
+  @spec calculate_position_with_aim(list(movement())) :: position()
+  def calculate_position_with_aim(movements) do
+    Enum.reduce(movements, {0, 0, 0}, &apply_movement_with_aim/2)
+  end
+
   defp apply_movement({:forward, dist}, {x, y}), do: {x + dist, y}
   defp apply_movement({:down, dist}, {x, y}), do: {x, y + dist}
   defp apply_movement({:up, dist}, {x, y}), do: {x, y - dist}
+
+  defp apply_movement_with_aim({:forward, dist}, {x, y, aim}), do: {x + dist, y + aim * dist, aim}
+  defp apply_movement_with_aim({:down, dist}, {x, y, aim}), do: {x, y, aim + dist}
+  defp apply_movement_with_aim({:up, dist}, {x, y, aim}), do: {x, y, aim - dist}
 
   def parse_input(input) do
     input

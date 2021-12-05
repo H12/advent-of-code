@@ -28,8 +28,23 @@ defmodule AdventOfCode do
   The solution to Day Two Part One.
   """
   def day_two_part_one(input) do
-    input
-    |> DayTwo.parse_input()
-    |> DayTwo.calculate_position()
+    pos =
+      input
+      |> DayTwo.parse_input()
+      |> DayTwo.calculate_position()
+
+    elem(pos, 0) * elem(pos, 1)
+  end
+
+  @doc """
+  The solution to Day Two Part Two.
+  """
+  def day_two_part_two(input) do
+    pos =
+      input
+      |> DayTwo.parse_input()
+      |> DayTwo.calculate_position_with_aim()
+
+    elem(pos, 0) * elem(pos, 1)
   end
 end
