@@ -3,7 +3,7 @@ defmodule AdventOfCode do
   The AdventOfCode namespace.
   """
 
-  alias AdventOfCode.{DayOne, DayTwo}
+  alias AdventOfCode.{DayOne, DayTwo, DayThree}
 
   @doc """
   The solution to Day One Part One.
@@ -46,5 +46,14 @@ defmodule AdventOfCode do
       |> DayTwo.calculate_position_with_aim()
 
     elem(pos, 0) * elem(pos, 1)
+  end
+
+  @doc """
+  The solution to Day Three Part One.
+  """
+  def day_three_part_one(input) do
+    input_list = DayThree.parse_input(input)
+
+    DayThree.get_gamma(input_list) * DayThree.get_epsilon(input_list)
   end
 end
