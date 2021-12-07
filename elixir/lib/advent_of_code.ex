@@ -56,4 +56,13 @@ defmodule AdventOfCode do
 
     DayThree.get_gamma(input_list) * DayThree.get_epsilon(input_list)
   end
+
+  @doc """
+  The solution to Day Three Part Two.
+  """
+  def day_three_part_two(input) do
+    input_list = DayThree.parse_input(input)
+
+    DayThree.get_o2_rating(input_list) * DayThree.get_co2_rating(input_list)
+  end
 end
